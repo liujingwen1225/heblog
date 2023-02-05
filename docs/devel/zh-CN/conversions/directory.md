@@ -6,7 +6,7 @@
 
 ```bash
 $ ls internal/         
-miniblog  pkg
+heblog  pkg
 ```
 
 这样做既可以保证 `internal` 目录下的文件功能清晰、整齐，又能缩短引用路径。

@@ -10,14 +10,14 @@ OUTPUT_DIR := $(ROOT_DIR)/_output
 # ==============================================================================
 # 定义 Makefile all 伪目标，执行 `make` 时，会默认会执行 all 伪目标
 .PHONY: all
-all: format build
+all: tidy format build
 
 # ==============================================================================
 # 定义其他需要的伪目标
 
 .PHONY: build
 build: tidy # 编译源码，依赖 tidy 目标自动添加/移除依赖包.
-	@go build -v -o $(OUTPUT_DIR)/miniblog $(ROOT_DIR)/cmd/miniblog/main.go
+	@go build -v -o $(OUTPUT_DIR)/heblog $(ROOT_DIR)/cmd/heblog/main.go
 
 .PHONY: format
 format: # 格式化 Go 源码.

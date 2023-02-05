@@ -1,4 +1,4 @@
-module miniblog
+module heblog
 
 go 1.19
 

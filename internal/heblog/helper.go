@@ -1,4 +1,4 @@
-package miniblog
+package heblog
 
 import (
 	"fmt"
