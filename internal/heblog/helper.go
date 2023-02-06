@@ -18,12 +18,14 @@ const (
 
 func initConfig() {
 	if cfgFile != "" {
+		// 从命令行选项指定的配置文件中读取
 		viper.SetConfigFile(cfgFile)
 	} else {
 		home, err := os.UserHomeDir()
 		// 如果获取用户主目录失败，打印 `'Error: xxx` 错误，并退出程序（退出码为 1）
 		cobra.CheckErr(err)
 		// 将用 `$HOME/<recommendedHomeDir>` 目录加入到配置文件的搜索路径中
+		// 从命令行选项指定的配置文件中读取
 		viper.SetConfigFile(filepath.Join(home, recommendedHomeDir))
 		// 把当前目录加入到配置文件的搜索路径中
 		viper.AddConfigPath(".")
@@ -32,8 +34,8 @@ func initConfig() {
 		viper.SetConfigName(defaultConfigName)
 	}
 	viper.AutomaticEnv()
-	// 读取环境变量的前缀为 MINIBLOG，如果是 heblog，将自动转变为大写。
-	viper.SetEnvPrefix("MINIBLOG")
+	// 读取环境变量的前缀为 HEBLOG，如果是 heblog，将自动转变为大写。
+	viper.SetEnvPrefix("HEBLOG")
 	// 以下 2 行，将 viper.Get(key) key 字符串中 '.' 和 '-' 替换为 '_'
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)
