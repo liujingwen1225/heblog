@@ -1,5 +1,7 @@
 package log
 
+import "go.uber.org/zap/zapcore"
+
 // Options 包含与日志相关的配置项.
 type Options struct {
 	// 是否开启 caller，如果开启会在日志中显示调用日志所在的文件和行号
@@ -16,5 +18,11 @@ type Options struct {
 
 // NewOptions 创建一个带有默认参数的 Options 对象.
 func NewOptions() *Options {
-	return &Options{}
+	return &Options{
+		DisableCaller:     false,
+		DisableStacktrace: false,
+		Level:             zapcore.InfoLevel.String(),
+		Format:            "console",
+		OutputPaths:       []string{"stdout"},
+	}
 }
