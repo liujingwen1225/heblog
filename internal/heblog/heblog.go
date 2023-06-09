@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"heblog/internal/pkg/core"
-	"heblog/internal/pkg/errno"
 	"heblog/internal/pkg/log"
 	mw "heblog/internal/pkg/middleware"
 	"heblog/pkg/version/verflag"
@@ -78,6 +76,9 @@ Find more miniblog information at:
 
 // run 函数是实际的业务代码入口函数.
 func run() error {
+	if err := initStore(); err != nil {
+		return err
+	}
 	// 设置 Gin 模式
 	gin.SetMode(viper.GetString("runmode"))
 
@@ -87,16 +88,9 @@ func run() error {
 	mws := []gin.HandlerFunc{gin.Recovery(), mw.NoCache, mw.Cors, mw.Secure, mw.RequestID()}
 
 	g.Use(mws...)
-	// 注册 404 Handler.
-	g.NoRoute(func(c *gin.Context) {
-		core.WriteResponse(c, errno.ErrPageNotFound, nil)
-	})
-
-	// 注册 /healthz handler.
-	g.GET("/healthz", func(c *gin.Context) {
-		log.C(c).Infow("Healthz function calle")
-		core.WriteResponse(c, nil, map[string]string{"status": "ok"})
-	})
+	if err := initRouter(g); err != nil {
+		return err
+	}
 	// 创建 HTTP Server 实例
 	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
 

@@ -3,7 +3,9 @@ package heblog
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"heblog/internal/heblog/store"
 	"heblog/internal/pkg/log"
+	"heblog/pkg/db"
 	"os"
 	"path/filepath"
 	"strings"
@@ -59,4 +61,23 @@ func logOptions() *log.Options {
 		Format:            viper.GetString("log.format"),
 		OutputPaths:       viper.GetStringSlice("log.output-paths"),
 	}
+}
+
+func initStore() error {
+	options := &db.MySqlOptions{
+		Host:                  viper.GetString("db.host"),
+		Username:              viper.GetString("db.username"),
+		Password:              viper.GetString("db.password"),
+		Database:              viper.GetString("db.database"),
+		MaxIdleConnections:    viper.GetInt("db.max-idle-connections"),
+		MaxOpenConnections:    viper.GetInt("db.max-open-connections"),
+		MaxConnectionLifeTime: viper.GetDuration("db.max-connection-life-time"),
+		LogLevel:              viper.GetInt("db.log-level"),
+	}
+	client, err := db.NewDbClient(options)
+	if err != nil {
+		return err
+	}
+	_ = store.NewStore(client)
+	return nil
 }
