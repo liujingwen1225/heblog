@@ -1,13 +1,10 @@
 package heblog
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"heblog/internal/heblog/store"
 	"heblog/internal/pkg/log"
 	"heblog/pkg/db"
-	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -15,7 +12,7 @@ const (
 	// defaultConfigName 指定了 heblog 服务的默认配置文件名.
 	defaultConfigName = "heblog.yaml"
 	// recommendedHomeDir 定义放置 heblog 服务配置的默认目录.
-	recommendedHomeDir = ".heblog"
+	//recommendedHomeDir = "config"
 )
 
 func initConfig() {
@@ -23,14 +20,14 @@ func initConfig() {
 		// 从命令行选项指定的配置文件中读取
 		viper.SetConfigFile(cfgFile)
 	} else {
-		home, err := os.UserHomeDir()
+		//home, err := os.UserHomeDir()
 		// 如果获取用户主目录失败，打印 `'Error: xxx` 错误，并退出程序（退出码为 1）
-		cobra.CheckErr(err)
+		//cobra.CheckErr(err)
 		// 将用 `$HOME/<recommendedHomeDir>` 目录加入到配置文件的搜索路径中
 		// 从命令行选项指定的配置文件中读取
-		viper.SetConfigFile(filepath.Join(home, recommendedHomeDir))
+		//viper.SetConfigFile(filepath.Join(home, recommendedHomeDir))
 		// 把当前目录加入到配置文件的搜索路径中
-		viper.AddConfigPath(".")
+		viper.AddConfigPath("./configs")
 		// 设置配置文件格式为 YAML (YAML 格式清晰易读，并且支持复杂的配置结构)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(defaultConfigName)
